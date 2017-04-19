@@ -1,4 +1,7 @@
-# api documentation for  [chromecast-player (v0.2.3)](https://github.com/xat/chromecast-player)  [![npm package](https://img.shields.io/npm/v/npmdoc-chromecast-player.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-chromecast-player) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-chromecast-player.svg)](https://travis-ci.org/npmdoc/node-npmdoc-chromecast-player)
+# npmdoc-chromecast-player
+
+#### api documentation for  [chromecast-player (v0.2.3)](https://github.com/xat/chromecast-player)  [![npm package](https://img.shields.io/npm/v/npmdoc-chromecast-player.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-chromecast-player) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-chromecast-player.svg)](https://travis-ci.org/npmdoc/node-npmdoc-chromecast-player)
+
 #### simple chromecast player
 
 [![NPM](https://nodei.co/npm/chromecast-player.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/chromecast-player)
