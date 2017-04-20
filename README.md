@@ -21,12 +21,15 @@
 ```json
 
 {
-    "author": {
-        "name": "Simon Kusterer"
+    "name": "chromecast-player",
+    "version": "0.2.3",
+    "description": "simple chromecast player",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "bugs": {
-        "url": "https://github.com/xat/chromecast-player/issues"
-    },
+    "author": "Simon Kusterer",
+    "license": "MIT",
     "dependencies": {
         "castv2-client": "^1.1.0",
         "chromecast-scanner": "^0.5.0",
@@ -37,38 +40,20 @@
         "ware": "^1.2.0",
         "xtend": "^4.0.0"
     },
-    "description": "simple chromecast player",
-    "devDependencies": {},
-    "directories": {},
-    "dist": {
-        "shasum": "fe9ce69911c88096d681e4242c1902ad30787216",
-        "tarball": "https://registry.npmjs.org/chromecast-player/-/chromecast-player-0.2.3.tgz"
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:xat/chromecast-player.git"
     },
-    "gitHead": "07e90b30b353ece38dac4af673df6367c3a05a2a",
-    "homepage": "https://github.com/xat/chromecast-player",
     "keywords": [
         "chromecast",
         "media",
         "player",
         "video"
     ],
-    "license": "MIT",
-    "main": "index.js",
-    "maintainers": [
-        {
-            "name": "xat"
-        }
-    ],
-    "name": "chromecast-player",
-    "optionalDependencies": {},
-    "repository": {
-        "type": "git",
-        "url": "git+ssh://git@github.com/xat/chromecast-player.git"
+    "bugs": {
+        "url": "https://github.com/xat/chromecast-player/issues"
     },
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "version": "0.2.3"
+    "homepage": "https://github.com/xat/chromecast-player"
 }
 ```
 
