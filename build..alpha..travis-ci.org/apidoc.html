@@ -780,7 +780,23 @@
     cb(null, status);
   });
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+  cb(null, status);
+});
+};
+
+Api.prototype.sessionRequest = function(data, cb) {
+var that = this;
+cb = cb || noop;
+this.<span class="apidocCodeKeywordSpan">getCurrentSession</span>(function(err, session) {
+  if (err) return cb(err);
+  if (!session) return cb(new Error(&#x27;session not found&#x27;));
+  var sessionId = session.mediaSessionId;
+  that.reqres.request(extend(data, { mediaSessionId: sessionId } ),
+    function(err, response) {
+      if(err) return cb(err);
+      cb(null, response.status[0]);
+...</pre></li>
     </ul>
 
 
@@ -796,20 +812,21 @@
   return this.tlHelper.getPosition();
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-  this.timelineSupported = true;
-  this._updatePosition(status);
 };
 
-
-TimelineHelper.prototype.getPosition = function() {
-  if (!this.timelineSupported) return false;
-  return this.tl.<span class="apidocCodeKeywordSpan">getPosition</span>();
+Api.prototype.unmute = function(cb) {
+  this.platform.setVolume({ muted: false }, cb || noop);
 };
 
-TimelineHelper.prototype.getProgress = function() {
-  if (!this.timelineSupported) return false;
-  return this.tl.getProgress();
+Api.prototype.getPosition = function() {
+  return this.tlHelper.<span class="apidocCodeKeywordSpan">getPosition</span>();
 };
+
+Api.prototype.getProgress = function() {
+  return this.tlHelper.getProgress();
+};
+
+module.exports = Api;
 ...</pre></li>
     </ul>
 
@@ -826,21 +843,17 @@ TimelineHelper.prototype.getProgress = function() {
   return this.tlHelper.getProgress();
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-TimelineHelper.prototype.getPosition = function() {
-  if (!this.timelineSupported) return false;
-  return this.tl.getPosition();
 };
 
-TimelineHelper.prototype.getProgress = function() {
-  if (!this.timelineSupported) return false;
-  return this.tl.<span class="apidocCodeKeywordSpan">getProgress</span>();
+Api.prototype.getPosition = function() {
+  return this.tlHelper.getPosition();
 };
 
-TimelineHelper.prototype.update = function() {
-  this.p.getStatus(this._updateLength.bind(this));
+Api.prototype.getProgress = function() {
+  return this.tlHelper.<span class="apidocCodeKeywordSpan">getProgress</span>();
 };
 
-module.exports = TimelineHelper;
+module.exports = Api;
 ...</pre></li>
     </ul>
 
@@ -865,17 +878,21 @@ module.exports = TimelineHelper;
   );
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-
-TimelineHelper.prototype.getProgress = function() {
-  if (!this.timelineSupported) return false;
-  return this.tl.getProgress();
+    }
+  );
 };
 
-TimelineHelper.prototype.update = function() {
-  this.p.<span class="apidocCodeKeywordSpan">getStatus</span>(this._updateLength.bind(this));
+Api.prototype.updateStatus = function(cb) {
+  var that = this;
+  cb = cb || noop;
+  this.<span class="apidocCodeKeywordSpan">getStatus</span>(function(err, status) {
+    if (status) {
+      that.emit(status.playerState.toLowerCase(), status);
+      that.emit(&#x27;status&#x27;, status);
+    }
+    cb(err, status);
+  });
 };
-
-module.exports = TimelineHelper;
 ...</pre></li>
     </ul>
 
@@ -891,7 +908,23 @@ module.exports = TimelineHelper;
     <li>description and source-code<pre class="apidocCodePre">getVolume = function (cb) {
   this.platform.getVolume(cb || noop);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+// volume can be a number between 0 and 1
+Api.prototype.setVolume = function(volume, cb) {
+  this.platform.setVolume({ level: volume }, cb || noop);
+};
+
+Api.prototype.getVolume = function(cb) {
+  this.platform.<span class="apidocCodeKeywordSpan">getVolume</span>(cb || noop);
+};
+
+Api.prototype.mute = function(cb) {
+  this.platform.setVolume({ muted: true }, cb || noop);
+};
+
+Api.prototype.unmute = function(cb) {
+...</pre></li>
     </ul>
 
 
@@ -1048,7 +1081,23 @@ player.attach(function(err, p) {
     );
   });
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// create a back-reference to the platform
+// needed for some api methods.
+Api.prototype.setPlatform = function(platform) {
+  this.platform = platform;
+};
+
+Api.prototype.play = function(cb) {
+  this.<span class="apidocCodeKeywordSpan">sessionRequest</span>({ type: &#x27;PLAY&#x27; }, cb);
+};
+
+Api.prototype.pause = function(cb) {
+  this.sessionRequest({ type: &#x27;PAUSE&#x27; }, cb);
+};
+
+Api.prototype.stop = function(cb) {
+...</pre></li>
     </ul>
 
 
@@ -1094,7 +1143,23 @@ return new Promise(function(resolve, reject) {
     <li>description and source-code<pre class="apidocCodePre">setVolume = function (volume, cb) {
   this.platform.setVolume({ level: volume }, cb || noop);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    type: &#x27;SEEK&#x27;,
+    currentTime: currentTime
+  }, cb);
+};
+
+// volume can be a number between 0 and 1
+Api.prototype.setVolume = function(volume, cb) {
+  this.platform.<span class="apidocCodeKeywordSpan">setVolume</span>({ level: volume }, cb || noop);
+};
+
+Api.prototype.getVolume = function(cb) {
+  this.platform.getVolume(cb || noop);
+};
+
+Api.prototype.mute = function(cb) {
+...</pre></li>
     </ul>
 
 
@@ -1281,7 +1346,23 @@ if (this.client &#x26;&#x26; !this.clientClosed) {
   var Controller = args.shift();
   return construct(Controller, [this.client, this.senderId, this.receiverId].concat(args));
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var timelineHelper = require(&#x27;./timelineHelper&#x27;);
+var noop = function() {};
+var slice = Array.prototype.slice;
+
+var Api = function(client, session) {
+var that = this;
+Application.apply(this, arguments);
+this.reqres = this.<span class="apidocCodeKeywordSpan">createController</span>(RequestResponseController,
+  &#x27;urn:x-cast:com.google.cast.media&#x27;);
+
+var onMessage = function(response, broadcast) {
+  if (response.type !== &#x27;MEDIA_STATUS&#x27; ||
+      !broadcast ||
+      !response.status ||
+      !response.status.length ||
+...</pre></li>
     </ul>
 
 
@@ -1425,20 +1506,21 @@ TimelineHelper.prototype.getPosition = function() {
   return this.tl.getPosition();
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-  this.timelineSupported = true;
-  this._updatePosition(status);
 };
 
-
-TimelineHelper.prototype.getPosition = function() {
-  if (!this.timelineSupported) return false;
-  return this.tl.<span class="apidocCodeKeywordSpan">getPosition</span>();
+Api.prototype.unmute = function(cb) {
+  this.platform.setVolume({ muted: false }, cb || noop);
 };
 
-TimelineHelper.prototype.getProgress = function() {
-  if (!this.timelineSupported) return false;
-  return this.tl.getProgress();
+Api.prototype.getPosition = function() {
+  return this.tlHelper.<span class="apidocCodeKeywordSpan">getPosition</span>();
 };
+
+Api.prototype.getProgress = function() {
+  return this.tlHelper.getProgress();
+};
+
+module.exports = Api;
 ...</pre></li>
     </ul>
 
@@ -1456,21 +1538,17 @@ TimelineHelper.prototype.getProgress = function() {
   return this.tl.getProgress();
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-TimelineHelper.prototype.getPosition = function() {
-  if (!this.timelineSupported) return false;
-  return this.tl.getPosition();
 };
 
-TimelineHelper.prototype.getProgress = function() {
-  if (!this.timelineSupported) return false;
-  return this.tl.<span class="apidocCodeKeywordSpan">getProgress</span>();
+Api.prototype.getPosition = function() {
+  return this.tlHelper.getPosition();
 };
 
-TimelineHelper.prototype.update = function() {
-  this.p.getStatus(this._updateLength.bind(this));
+Api.prototype.getProgress = function() {
+  return this.tlHelper.<span class="apidocCodeKeywordSpan">getProgress</span>();
 };
 
-module.exports = TimelineHelper;
+module.exports = Api;
 ...</pre></li>
     </ul>
 

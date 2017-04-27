@@ -18,7 +18,7 @@
 <tspan x="10" y="250">  │ ├── array-find@0.1.1 </tspan>
 <tspan x="10" y="266">  │ └─┬ multicast-dns@4.0.1 </tspan>
 <tspan x="10" y="282">  │   └── thunky@0.1.0 </tspan>
-<tspan x="10" y="298">  ├─┬ debug@2.6.4 </tspan>
+<tspan x="10" y="298">  ├─┬ debug@2.6.5 </tspan>
 <tspan x="10" y="314">  │ └── ms@0.7.3 </tspan>
 <tspan x="10" y="330">  ├── mutate.js@0.2.0 </tspan>
 <tspan x="10" y="346">  ├── promiscuous@0.6.0 </tspan>
